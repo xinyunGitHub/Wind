@@ -10,8 +10,37 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-Route::get('think', function () {
-    return 'hello,ThinkPHP6!';
-});
+Route::rule('apg/manage/:method', '\app\controller\admin\Manage@index', 'POST')
+    ->allowCrossDomain([
+        'Access-Control-Allow-Origin' => '*'
+    ]);
 
-Route::get('hello/:name', 'index/hello');
+Route::rule('apg/user/:method', '\app\controller\admin\User@index', 'POST')
+    ->allowCrossDomain([
+        'Access-Control-Allow-Origin' => '*'
+    ]);
+
+Route::rule('apg/goods/:method', '\app\controller\admin\Goods@index', 'POST')
+    ->allowCrossDomain([
+        'Access-Control-Allow-Origin' => '*'
+    ]);
+
+Route::rule('apg/detail/:method', '\app\controller\admin\Detail@index', 'POST')
+    ->allowCrossDomain([
+        'Access-Control-Allow-Origin' => '*'
+    ]);
+
+Route::rule('apg/inventory/:method', '\app\controller\admin\Inventory@index', 'POST')
+    ->allowCrossDomain([
+        'Access-Control-Allow-Origin' => '*'
+    ]);
+
+Route::rule('apg/address/:method', '\app\controller\admin\Address@index', 'POST')
+    ->allowCrossDomain([
+        'Access-Control-Allow-Origin' => '*'
+    ]);
+
+Route::rule('apg/order/:method', '\app\controller\admin\Order@index', 'POST')
+    ->allowCrossDomain([
+        'Access-Control-Allow-Origin' => '*'
+    ]);

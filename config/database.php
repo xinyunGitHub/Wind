@@ -23,11 +23,11 @@ return [
             // 服务器地址
             'hostname'        => env('database.hostname', '127.0.0.1'),
             // 数据库名
-            'database'        => env('database.database', ''),
+            'database'        => env('database.database', 'wind'),
             // 用户名
             'username'        => env('database.username', 'root'),
             // 密码
-            'password'        => env('database.password', ''),
+            'password'        => env('database.password', '123456789'),
             // 端口
             'hostport'        => env('database.hostport', '3306'),
             // 数据库连接参数
@@ -48,7 +48,7 @@ return [
             // 是否严格检查字段是否存在
             'fields_strict'   => true,
             // 是否需要断线重连
-            'break_reconnect' => false,
+            'break_reconnect' => true,
             // 监听SQL
             'trigger_sql'     => env('app_debug', true),
             // 开启字段缓存
