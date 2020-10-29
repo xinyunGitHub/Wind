@@ -11,6 +11,9 @@ class Detail extends BaseController
     {
         switch($method)
         {
+            case 'upload':
+                return $this->upload();
+            break;
             case 'add':
                 return $this->add();
             break;
@@ -26,6 +29,27 @@ class Detail extends BaseController
         }
     }
 
+    /* 新增商品详情上传接口 */
+    public function upload()
+    {
+        // 获取表单上传文件
+        $files = request()->file();
+        try {
+            validate(['image'=>'filesize:10240|fileExt:jpg|image:200,200,jpg'])
+                ->check($files);
+            $savename = [];
+            foreach($files as $file) {
+                $savename = \think\facade\Filesystem::disk('public')->putFile('detail', $file);
+                $params = array(
+                    'status' => true,
+                    'data'   => $savename
+                );
+                return json($params);
+            }
+        } catch (\think\exception\ValidateException $e) {
+            echo $e->getMessage();
+        }
+    }
     /* 新增商品详情 */
     public function add()
     {
@@ -42,26 +66,38 @@ class Detail extends BaseController
         ];
 
         try {
-            Db::name('detail')->insert($detail);
-            foreach ($figure as $val) {
-                $list = [
-                    'unique' => $unique,
-                    'figure' => $val,
-                ];
-                Db::name('figure')->insert($list);
+            if (Db::table('detail')->where('unique', $unique)->find()) {
+                $params = array(
+                    'status' => false,
+                    'message' => '同一商品不可重复添加商品详情～'
+                );
+                return json($params);
+            } else {
+                Db::name('detail')->insert($detail);
+                foreach ($figure as $val) {
+                    $list = [
+                        'unique' => $unique,
+                        'figure' => $val,
+                    ];
+                    Db::name('figure')->insert($list);
+                }
+                foreach ($describe as $des) {
+                    $item = [
+                        'unique' => $unique,
+                        'describe' => $des,
+                    ];
+                    Db::name('describe')->insert($item);
+                }
+                $list = Db::table('detail')->where('unique', $unique)->find();
+                $list['figure'] = $figure;
+                $list['describe'] = $describe;
+                $params = array(
+                    'status' => true,
+                    'data'   => $list,
+                    'message' => '商品详情新建成功～'
+                );
+                return json($params); 
             }
-            foreach ($describe as $des) {
-                $item = [
-                    'unique' => $unique,
-                    'describe' => $des,
-                ];
-                Db::name('describe')->insert($item);
-            }
-            $params = array(
-                'status' => true,
-                'message' => '商品详情新建成功～'
-            );
-            return json($params); 
         } catch(Exception $err) {
             $params = array(
                 'status' => false,
@@ -127,8 +163,16 @@ class Detail extends BaseController
                 }
             }
 
+            $list = array(
+                'title'  => $title,
+                'price'  => $price,
+                'figure' => $figure,
+                'describe' => $describe
+            );
+
             $params = array(
-                'status' => true,
+                'status'  => true,
+                'data'    => $list,
                 'message' => '商品详情编辑成功～'
             );
             return json($params); 
