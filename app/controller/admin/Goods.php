@@ -99,7 +99,13 @@ class Goods extends BaseController
             Db::table('goods')->where('unique', $unique)->delete();
             Db::table('detail')->where('unique', $unique)->delete();
             Db::table('figure')->where('unique', $unique)->delete();
-            Db::table('describe')->where('unique', $unique)->delete();
+            Db::table('thumb')->where('unique', $unique)->delete();
+            // 删除sku
+            $data = Db::name('skukey')->where('unique', $unique)->select();
+            foreach ($data as $list) {
+                Db::name('skuvalue')->where('sku', $list['id'])->delete();
+            }
+            Db::name('skukey')->where('unique', $unique)->delete();
             $params = array(
                 'status'  => true,
                 'message' => '商品信息删除成功～'

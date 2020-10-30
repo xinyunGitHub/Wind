@@ -86,7 +86,7 @@ class Detail extends BaseController
                         'unique' => $unique,
                         'describe' => $des,
                     ];
-                    Db::name('describe')->insert($item);
+                    Db::name('thumb')->insert($item);
                 }
                 $list = Db::table('detail')->where('unique', $unique)->find();
                 $list['figure'] = $figure;
@@ -113,7 +113,7 @@ class Detail extends BaseController
         try {
             Db::table('detail')->where('unique', $unique)->delete();
             Db::table('figure')->where('unique', $unique)->delete();
-            Db::table('describe')->where('unique', $unique)->delete();
+            Db::table('thumb')->where('unique', $unique)->delete();
             $params = array(
                 'status' => true,
                 'message'   => '商品信息删除成功～'
@@ -153,13 +153,13 @@ class Detail extends BaseController
                 }
             }
 
-            if (Db::table('describe')->where('unique', $unique)->delete()) {
+            if (Db::table('thumb')->where('unique', $unique)->delete()) {
                 foreach ($describe as $des) {
                     $item = [
                         'unique' => $unique,
                         'describe' => $des
                     ];
-                    Db::name('describe')->insert($item);
+                    Db::name('thumb')->insert($item);
                 }
             }
 
@@ -200,7 +200,7 @@ class Detail extends BaseController
             $que['figure'] = $figure;
 
             $describe = array();
-            $item = Db::table('describe')->where('unique', $unique)->select();
+            $item = Db::table('thumb')->where('unique', $unique)->select();
             foreach ($item as $keydes => $des) {
                 $describe[$keydes] = $des['describe'];
             }

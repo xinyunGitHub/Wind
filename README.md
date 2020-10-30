@@ -50,17 +50,15 @@ id          int        id
 unique      int        商品ID
 describe    string     商品描述信息
 
-skuKey    商品SKU -- key
+skukey    商品SKU -- key
 id          int        id
 unique      string     商品ID
-sort        int        sku排序
 value       string     sku名称
 
-skuValue  商品SKU -- value
+skuvalue  商品SKU -- value
 id          int        id
 sku         int        skuID
-attribute   string     sku属性
-inventory   int        sku库存
+value       string     sku属性
 
 order  订单列表
 id          int        订单ID

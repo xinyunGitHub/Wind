@@ -30,7 +30,7 @@ Route::rule('apg/detail/:method', '\app\controller\admin\Detail@index', 'POST')
         'Access-Control-Allow-Origin' => '*'
     ]);
 
-Route::rule('apg/inventory/:method', '\app\controller\admin\Inventory@index', 'POST')
+Route::rule('apg/memory/:method', '\app\controller\admin\Memory@index', 'POST')
     ->allowCrossDomain([
         'Access-Control-Allow-Origin' => '*'
     ]);
