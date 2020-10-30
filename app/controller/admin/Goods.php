@@ -49,46 +49,99 @@ class Goods extends BaseController
             echo $e->getMessage();
         }
     }
+    public function generate($count) {
+        switch(strlen($count)) {
+            case 1:
+                $count = $count.'00000';
+            break;
+            case 2:
+                $count = $count.'0000';
+            break;
+            case 3:
+                $count = $count.'000';
+            break;
+            case 4:
+                $count = $count.'00';
+            break;
+            case 5:
+                $count = $count.'0';
+            break;
+        }
+        $arr = str_split($count);
+        $unique = '';
+        foreach ($arr as $val) {
+            switch($val)
+            {
+                case '0':
+                    $unique = $unique.'x';
+                break;
+                case '1':
+                    $unique = $unique.'a';
+                break;
+                case '2':
+                    $unique = $unique.'d';
+                break;
+                case '3':
+                    $unique = $unique.'m';
+                break;
+                case '4':
+                    $unique = $unique.'w';
+                break;
+                case '5':
+                    $unique = $unique.'c';
+                break;
+                case '6':
+                    $unique = $unique.'s';
+                break;
+                case '7':
+                    $unique = $unique.'z';
+                break;
+                case '8':
+                    $unique = $unique.'y';
+                break;
+                case '9':
+                    $unique = $unique.'h';
+                break;
+            }
+        }
+        return strtoupper(hash('crc32', $unique));
+    }
+
     /* 新增商品信息 */
     public function add()
     {
+        // 商品ID规则
         $biggest = Db::table('goods')->field('max(id)')->select();
-        $count = (string)(100000000 - $biggest[0]['max(id)']);
-        $unique = sha1(md5(hash('ripemd160', $count)));
+        $count = (string)$biggest[0]['max(id)'] ? (string)$biggest[0]['max(id)'] : 0;
+        $unique = $this->generate($count);
+
         $thumb = Request::post('thumb');
         $title = Request::post('title');
         $price = Request::post('price');
         $tally = Request::post('tally');
-        $data = [
-            'unique' => $unique,
-            'thumb'  => $thumb,
-            'title'  => $title,
-            'price'  => $price,
-            'tally'  => $tally,
-        ];
 
-        if (Db::table('goods')->where('unique', $unique)->find()) {
+        try {
+            $data = [
+                'unique' => $unique,
+                'thumb'  => $thumb,
+                'title'  => $title,
+                'price'  => $price,
+                'tally'  => $tally,
+            ];
+            Db::name('goods')->insert($data);
+            $list = Db::table('goods')->where('unique', $unique)->find();
             $params = array(
-                'status'  => true,
-                'message' => '商品新建失败～'
+                'status' => true,
+                'data'   => $list,
+                'message' => '商品新建成功～'
             );
             return json($params);
-        } else {
-            if (Db::name('goods')->insert($data)) {
-                $list = Db::table('goods')->where('unique', $unique)->find();
-                $params = array(
-                    'status' => true,
-                    'data'   => $list,
-                    'message' => '商品新建成功～'
-                );
-                return json($params);
-            } else {
-                $params = array(
-                    'status'  => false,
-                    'message' => '未知错误～'
-                );
-                return json($params);
-            }
+        } catch(Exception $err) {
+            $params = array(
+                'status' => false,
+                'message' => $err
+            );
+            return json($params); 
         }
     }
     /* 删除商品信息 */
