@@ -119,6 +119,7 @@ class Goods extends BaseController
         $title = Request::post('title');
         $price = Request::post('price');
         $tally = Request::post('tally');
+        $type = Request::post('type');
 
         try {
             $data = [
@@ -127,6 +128,7 @@ class Goods extends BaseController
                 'title'  => $title,
                 'price'  => $price,
                 'tally'  => $tally,
+                'type'  => $type,
             ];
             Db::name('goods')->insert($data);
             $list = Db::table('goods')->where('unique', $unique)->find();
@@ -180,11 +182,13 @@ class Goods extends BaseController
         $title = Request::post('title');
         $price = Request::post('price');
         $tally = Request::post('tally');
+        $type = Request::post('type');
         $data = [
             'thumb' => $thumb,
             'title' => $title,
             'price' => $price,
             'tally' => $tally,
+            'type'  => $type,
         ];
 
         try {
