@@ -21,6 +21,11 @@ Route::rule('apg/user/:method', '\app\controller\admin\User@index', 'POST')
         'Access-Control-Allow-Origin' => '*'
     ]);
 
+Route::rule('apg/advert/:method', '\app\controller\admin\Advert@index', 'POST')
+    ->allowCrossDomain([
+        'Access-Control-Allow-Origin' => '*'
+    ]);
+
 Route::rule('apg/goods/:method', '\app\controller\admin\Goods@index', 'POST')
     ->allowCrossDomain([
         'Access-Control-Allow-Origin' => '*'

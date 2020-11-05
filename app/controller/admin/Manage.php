@@ -35,7 +35,7 @@ class Manage extends BaseController
     /* 登录后台 */
     public function login()
     {
-        $account = Request::post('account');
+        $account  = Request::post('account');
         $password = Request::post('password');
         try {
             $hash = Db::table('manage')->where('account', $account)->value('password');

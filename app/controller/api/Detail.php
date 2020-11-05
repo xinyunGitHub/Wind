@@ -36,12 +36,12 @@ class Detail extends BaseController
             );
             $params = array(
                 'status' => true,
-                'data' => $result,
+                'data'   => $result,
             );
             return json($params); 
         } catch(Exception $err) {
             $params = array(
-                'status' => false,
+                'status'  => false,
                 'message' => $err
             );
             return json($params); 
@@ -78,7 +78,7 @@ class Detail extends BaseController
             return json($params);
         } catch(Exception $err) {
             $params = array(
-                'status' => false,
+                'status'  => false,
                 'message' => $err
             );
             return json($params); 

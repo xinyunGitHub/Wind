@@ -9,20 +9,37 @@ class Order extends BaseController
 {
     public function index($method)
     {
-        // switch($method)
-        // {
-        //     case 'add':
-        //         return $this->add();
-        //     break;
-        //     case 'del':
-        //         return $this->del();
-        //     break;
-        //     case 'edit':
-        //         return $this->edit();
-        //     break;
-        //     case 'query':
-        //         return $this->query();
-        //     break;
-        // }
+        switch($method)
+        {
+            case 'value':
+                return $this->value();
+            break;
+            case 'query':
+                return $this->query();
+            break;
+        }
+    }
+
+    /* 订单查询 */
+    public function value()
+    {
+        $value = Request::post('value');
+        $query = Db::table('order')->where('phone|water','like', '%'.$value.'%')->select();
+        $params = array(
+            'status' => true,
+            'data'   => $query
+        );
+        return json($params);
+    }
+
+    /* 订单列表 */
+    public function query()
+    {
+        $query  = Db::table('order')->select();
+        $params = array(
+            'status' => true,
+            'data'   => $query
+        );
+        return json($params);
     }
 }

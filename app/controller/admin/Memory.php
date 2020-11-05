@@ -33,13 +33,13 @@ class Memory extends BaseController
             }
             Db::name('skukey')->where('unique', $unique)->delete();
             $params = array(
-                'status' => true,
+                'status'  => true,
                 'message' => 'Sku数据配置删除成功～'
             );
             return json($params);
         } catch(Exception $err) {
             $params = array(
-                'status' => false,
+                'status'  => false,
                 'message' => $err
             );
             return json($params);
@@ -80,13 +80,13 @@ class Memory extends BaseController
                 }
             }
             $params = array(
-                'status' => true,
-                'message'=> 'Sku编辑成功～'
+                'status'  => true,
+                'message' => 'Sku编辑成功～'
             );
             return json($params); 
         } catch(Exception $err) {
             $params = array(
-                'status' => false,
+                'status'  => false,
                 'message' => $err
             );
             return json($params);
@@ -96,22 +96,22 @@ class Memory extends BaseController
     public function query()
     {
         try {
-            $detail = Db::name('detail')->select();
-            $skukey = Db::name('skukey')->select();
+            $detail   = Db::name('detail')->select();
+            $skukey   = Db::name('skukey')->select();
             $skuvalue = Db::name('skuvalue')->select();
             $data = array(
-                'detail' => $detail,
-                'skukey' => $skukey,
+                'detail'   => $detail,
+                'skukey'   => $skukey,
                 'skuvalue' => $skuvalue
             );
             $params = array(
                 'status' => true,
-                'data' => $data
+                'data'   => $data
             );
             return json($params);
         } catch(Exception $err) {
             $params = array(
-                'status' => false,
+                'status'  => false,
                 'message' => $err
             );
             return json($params);

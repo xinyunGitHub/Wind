@@ -72,4 +72,10 @@ id          int        id
 name        string     收货人姓名
 phone       string     收货人手机号
 address     string     收货人地址
+
+advert 广告管理
+id          int        id
+thumb       string     大图
+sort        int        排序
+route       string     商品ID
 =============================================

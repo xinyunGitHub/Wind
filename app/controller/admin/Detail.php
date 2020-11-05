@@ -53,22 +53,22 @@ class Detail extends BaseController
     /* 新增商品详情 */
     public function add()
     {
-        $unique = Request::post('unique');
-        $title = Request::post('title');
-        $price = Request::post('price');
-        $figure = Request::post('figure');
+        $unique   = Request::post('unique');
+        $title    = Request::post('title');
+        $price    = Request::post('price');
+        $figure   = Request::post('figure');
         $describe = Request::post('describe');
 
         $detail = [
             'unique' => $unique,
-            'title' => $title,
-            'price' => $price,
+            'title'  => $title,
+            'price'  => $price,
         ];
 
         try {
             if (Db::table('detail')->where('unique', $unique)->find()) {
                 $params = array(
-                    'status' => false,
+                    'status'  => false,
                     'message' => '同一商品不可重复添加商品详情～'
                 );
                 return json($params);
@@ -83,24 +83,24 @@ class Detail extends BaseController
                 }
                 foreach ($describe as $des) {
                     $item = [
-                        'unique' => $unique,
+                        'unique'   => $unique,
                         'describe' => $des,
                     ];
                     Db::name('thumb')->insert($item);
                 }
                 $list = Db::table('detail')->where('unique', $unique)->find();
-                $list['figure'] = $figure;
+                $list['figure']   = $figure;
                 $list['describe'] = $describe;
                 $params = array(
-                    'status' => true,
-                    'data'   => $list,
+                    'status'  => true,
+                    'data'    => $list,
                     'message' => '商品详情新建成功～'
                 );
                 return json($params); 
             }
         } catch(Exception $err) {
             $params = array(
-                'status' => false,
+                'status'  => false,
                 'message' => $err
             );
             return json($params); 
@@ -115,13 +115,13 @@ class Detail extends BaseController
             Db::table('figure')->where('unique', $unique)->delete();
             Db::table('thumb')->where('unique', $unique)->delete();
             $params = array(
-                'status' => true,
-                'message'   => '商品信息删除成功～'
+                'status'  => true,
+                'message' => '商品信息删除成功～'
             );
             return json($params);
         } catch(Exception $err) {
             $params = array(
-                'status' => false,
+                'status'  => false,
                 'message' => $err
             );
             return json($params); 
@@ -156,7 +156,7 @@ class Detail extends BaseController
             if (Db::table('thumb')->where('unique', $unique)->delete()) {
                 foreach ($describe as $des) {
                     $item = [
-                        'unique' => $unique,
+                        'unique'   => $unique,
                         'describe' => $des
                     ];
                     Db::name('thumb')->insert($item);
@@ -164,9 +164,9 @@ class Detail extends BaseController
             }
 
             $list = array(
-                'title'  => $title,
-                'price'  => $price,
-                'figure' => $figure,
+                'title'    => $title,
+                'price'    => $price,
+                'figure'   => $figure,
                 'describe' => $describe
             );
 
@@ -178,7 +178,7 @@ class Detail extends BaseController
             return json($params); 
         } catch(Exception $err) {
             $params = array(
-                'status' => false,
+                'status'  => false,
                 'message' => $err
             );
             return json($params); 

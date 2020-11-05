@@ -112,14 +112,14 @@ class Goods extends BaseController
     {
         // 商品ID规则
         $biggest = Db::table('goods')->field('max(id)')->select();
-        $count = (string)$biggest[0]['max(id)'] ? (string)$biggest[0]['max(id)'] : 0;
-        $unique = $this->generate($count);
+        $count   = (string)$biggest[0]['max(id)'] ? (string)$biggest[0]['max(id)'] : 0;
+        $unique  = $this->generate($count);
 
         $thumb = Request::post('thumb');
         $title = Request::post('title');
         $price = Request::post('price');
         $tally = Request::post('tally');
-        $type = Request::post('type');
+        $type  = Request::post('type');
 
         try {
             $data = [
@@ -128,19 +128,19 @@ class Goods extends BaseController
                 'title'  => $title,
                 'price'  => $price,
                 'tally'  => $tally,
-                'type'  => $type,
+                'type'   => $type,
             ];
             Db::name('goods')->insert($data);
             $list = Db::table('goods')->where('unique', $unique)->find();
             $params = array(
-                'status' => true,
-                'data'   => $list,
+                'status'  => true,
+                'data'    => $list,
                 'message' => '商品新建成功～'
             );
             return json($params);
         } catch(Exception $err) {
             $params = array(
-                'status' => false,
+                'status'  => false,
                 'message' => $err
             );
             return json($params); 

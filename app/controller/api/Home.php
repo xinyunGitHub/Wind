@@ -12,8 +12,8 @@ class Home extends BaseController
     {
         switch($method)
         {
-            case 'swipe':
-                return $this->swipe();
+            case 'advert':
+                return $this->advert();
             break;
             case 'tabs':
                 return $this->tabs();
@@ -22,11 +22,12 @@ class Home extends BaseController
     }
 
     /* banner数据 */
-    public function swipe()
+    public function advert()
     {
+        $query = Db::table('advert')->order('sort', 'desc')->select();
         $params = array(
-            'status' => false,
-            'data'   => $data
+            'status' => true,
+            'data'   => $query
         );
         return json($params);
     }

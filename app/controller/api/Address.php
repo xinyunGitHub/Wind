@@ -33,13 +33,13 @@ class Address extends BaseController
     /* 新增地址 */
     public function add()
     {
-        $openid = Request::post('openid');
-        $name = Request::post('name');
-        $phone = Request::post('phone');
+        $openid   = Request::post('openid');
+        $name     = Request::post('name');
+        $phone    = Request::post('phone');
         $province = Request::post('province');
-        $city = Request::post('city');
-        $county = Request::post('county');
-        $road = Request::post('road');
+        $city     = Request::post('city');
+        $county   = Request::post('county');
+        $road     = Request::post('road');
 
         $data = array(
             'openid'   => $openid,
@@ -74,14 +74,14 @@ class Address extends BaseController
     /* 编辑地址 */
     public function edit()
     {
-        $openid = Request::post('openid');
-        $id = Request::post('id');
-        $name = Request::post('name');
-        $phone = Request::post('phone');
+        $openid   = Request::post('openid');
+        $id       = Request::post('id');
+        $name     = Request::post('name');
+        $phone    = Request::post('phone');
         $province = Request::post('province');
-        $city = Request::post('city');
-        $county = Request::post('county');
-        $road = Request::post('road');
+        $city     = Request::post('city');
+        $county   = Request::post('county');
+        $road     = Request::post('road');
 
         $data = array(
             'openid'   => $openid,
@@ -117,7 +117,7 @@ class Address extends BaseController
     public function del()
     {
         $openid = Request::post('openid');
-        $id = Request::post('id');
+        $id     = Request::post('id');
         try {
             $query = Db::name('address')->where(['openid' => $openid, 'id' => $id])->find();
             if ($query['active'] == 0) {
@@ -153,7 +153,7 @@ class Address extends BaseController
     public function update()
     {
         $openid = Request::post('openid');
-        $id = Request::post('id');
+        $id     = Request::post('id');
         try {
             Db::name('address')->where('openid', $openid)->update(['active' => 1]);
             Db::name('address')->where(['openid' => $openid, 'id' => $id])->update(['active' => 0]);
@@ -180,7 +180,7 @@ class Address extends BaseController
             $query = Db::table('address')->where('openid', $openid)->select();
             foreach ($query as $val) {
                 $list = array(
-                    'id' => $val['id'],
+                    'id'        => $val['id'],
                     'tel'       => substr_replace($val['phone'], '*****', '3', '5'),
                     'name'      => $val['name'],
                     'province'  => $val['province'],
