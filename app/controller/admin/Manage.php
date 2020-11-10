@@ -113,10 +113,12 @@ class Manage extends BaseController
         $name = Request::post('name');
         $account = Request::post('account');
         $password = Request::post('password');
+        $time     = time();
         $data = [
             'name'     => $name,
             'account'  => $account,
-            'password' => password_hash($password, PASSWORD_DEFAULT)
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'time'     => $time
         ];
 
         if (Db::table('manage')->where('account', $account)->find()) {
@@ -217,7 +219,7 @@ class Manage extends BaseController
     /* 查询管理员 */
     public function query()
     {
-        $query = Db::table('manage')->field('id, name, account')->select();
+        $query = Db::table('manage')->field('id, name, account, time')->select();
         $params = array(
             'status' => true,
             'data'   => $query

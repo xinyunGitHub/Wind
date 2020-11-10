@@ -58,11 +58,13 @@ class Detail extends BaseController
         $price    = Request::post('price');
         $figure   = Request::post('figure');
         $describe = Request::post('describe');
+        $time     = time();
 
         $detail = [
             'unique' => $unique,
             'title'  => $title,
             'price'  => $price,
+            'time'   => $time
         ];
 
         try {

@@ -56,12 +56,14 @@ class Advert extends BaseController
         $thumb = Request::post('thumb');
         $sort  = Request::post('sort');
         $route = Request::post('route');
+        $time  = time();
 
         try {
             $data = [
                 'thumb' => $thumb,
                 'sort'  => $sort,
-                'route' => $route
+                'route' => $route,
+                'time'  => $time
             ];
             Db::name('advert')->insert($data);
             $list   = Db::table('advert')->where('thumb', $thumb)->find();

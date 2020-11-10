@@ -120,6 +120,7 @@ class Goods extends BaseController
         $price = Request::post('price');
         $tally = Request::post('tally');
         $type  = Request::post('type');
+        $time  = time();
 
         try {
             $data = [
@@ -129,6 +130,7 @@ class Goods extends BaseController
                 'price'  => $price,
                 'tally'  => $tally,
                 'type'   => $type,
+                'time'   => $time
             ];
             Db::name('goods')->insert($data);
             $list = Db::table('goods')->where('unique', $unique)->find();

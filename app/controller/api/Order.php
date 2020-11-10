@@ -57,12 +57,13 @@ class Order extends BaseController
         $goodsId   = Request::post('goodsId');
         $unique    = Request::post('unique');
         $amount    = Request::post('amount');
+        $time      = time();
 
         try {
             $address = Db::name('address')->where(['id' => $addressId, 'openid' => $openid])->find();
             $goods   = Db::name('detail')->where(['unique' => $unique, 'id' => $goodsId])->find();
 
-            if ($goods['price'] * $count == $amount) { // 检验总价是否正确
+            if ($goods['price'] * $count == $amount OR $goods['price'] * $count - 10 == $amount) { // 检验总价是否正确
                 $biggest = Db::table('order')->field('max(id)')->select();
                 $maxid = (string)$biggest[0]['max(id)'] ? (string)$biggest[0]['max(id)'] : 0;
                 $water = strtoupper(hash('haval128,3', $openid.$maxid));
@@ -78,7 +79,8 @@ class Order extends BaseController
                     'amount'  => $amount,
                     'gather'  => $gather,
                     'count'   => $count,
-                    'water'   => $water
+                    'water'   => $water,
+                    'time'    => $time
                 );
                 Db::name('order')->insert($data);
                 $params = array(

@@ -40,6 +40,7 @@ class Address extends BaseController
         $city     = Request::post('city');
         $county   = Request::post('county');
         $road     = Request::post('road');
+        $time     = time();
 
         $data = array(
             'openid'   => $openid,
@@ -49,7 +50,8 @@ class Address extends BaseController
             'city'     => $city,
             'county'   => $county,
             'road'     => $road,
-            'active'   => 0
+            'active'   => 0,
+            'time'     => $time
         );
         $active = array(
             'active' => 1
