@@ -48,6 +48,5 @@ class Home extends BaseController
             );
             return json($params);
         }
-
     }
 }

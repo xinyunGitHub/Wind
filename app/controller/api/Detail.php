@@ -6,6 +6,9 @@ use think\Facade\Db;
 use think\facade\Cache;
 use think\facade\Request;
 
+use app\validate\Unique;
+use think\exception\ValidateException;
+
 class Detail extends BaseController
 {
     public function index($method)
@@ -26,6 +29,9 @@ class Detail extends BaseController
     {
         $unique = Request::post('unique');
         try {
+            validate(Unique::class)->check([
+                'unique' => $unique
+            ]);
             $query = Db::table('detail')->where('unique', $unique)->find();
             $figure = Db::table('figure')->where('unique', $unique)->select();
             $thumb = Db::table('thumb')->where('unique', $unique)->select();
@@ -52,6 +58,9 @@ class Detail extends BaseController
     {
         $unique = Request::post('unique');
         try {
+            validate(Unique::class)->check([
+                'unique' => $unique
+            ]);
             $result = array();
             $skukey = Db::table('skukey')->where('unique', $unique)->select();
             foreach ($skukey as $key => $val) {

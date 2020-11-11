@@ -6,6 +6,11 @@ use think\Facade\Db;
 use think\facade\Cache;
 use think\facade\Request;
 
+use app\validate\Openid;
+use app\validate\Word;
+use app\validate\Digital;
+use think\exception\ValidateException;
+
 class Address extends BaseController
 {
     public function index($method)
@@ -41,22 +46,32 @@ class Address extends BaseController
         $county   = Request::post('county');
         $road     = Request::post('road');
         $time     = time();
-
-        $data = array(
-            'openid'   => $openid,
-            'name'     => $name,
-            'phone'    => $phone,
-            'province' => $province,
-            'city'     => $city,
-            'county'   => $county,
-            'road'     => $road,
-            'active'   => 0,
-            'time'     => $time
-        );
-        $active = array(
-            'active' => 1
-        );
         try {
+            validate(Openid::class)->check([
+                'openid' => $openid
+            ]);
+            validate(Word::class)->check([
+                'Word' => $name
+            ]);
+            validate(Digital::class)->check([
+                'digital' => $phone
+            ]);
+
+            $data = array(
+                'openid'   => $openid,
+                'name'     => $name,
+                'phone'    => $phone,
+                'province' => $province,
+                'city'     => $city,
+                'county'   => $county,
+                'road'     => $road,
+                'active'   => 0,
+                'time'     => $time
+            );
+            $active = array(
+                'active' => 1
+            );
+
             Db::name('address')->where('openid', $openid)->update($active);
             Db::name('address')->insert($data);
             $params = array(
@@ -84,21 +99,34 @@ class Address extends BaseController
         $city     = Request::post('city');
         $county   = Request::post('county');
         $road     = Request::post('road');
-
-        $data = array(
-            'openid'   => $openid,
-            'name'     => $name,
-            'phone'    => $phone,
-            'province' => $province,
-            'city'     => $city,
-            'county'   => $county,
-            'road'     => $road,
-            'active'   => 0
-        );
-        $active = array(
-            'active' => 1
-        );
         try {
+            validate(Openid::class)->check([
+                'openid' => $openid
+            ]);
+            validate(Digital::class)->check([
+                'digital' => $id
+            ]);
+            validate(Word::class)->check([
+                'Word' => $name
+            ]);
+            validate(Digital::class)->check([
+                'digital' => $phone
+            ]);
+
+            $data = array(
+                'openid'   => $openid,
+                'name'     => $name,
+                'phone'    => $phone,
+                'province' => $province,
+                'city'     => $city,
+                'county'   => $county,
+                'road'     => $road,
+                'active'   => 0
+            );
+            $active = array(
+                'active' => 1
+            );
+
             Db::name('address')->where('openid', $openid)->update($active);
             Db::name('address')->where(['openid' => $openid, 'id' => $id])->update($data);
             $params = array(
@@ -121,6 +149,12 @@ class Address extends BaseController
         $openid = Request::post('openid');
         $id     = Request::post('id');
         try {
+            validate(Openid::class)->check([
+                'openid' => $openid
+            ]);
+            validate(Digital::class)->check([
+                'digital' => $id
+            ]);
             $query = Db::name('address')->where(['openid' => $openid, 'id' => $id])->find();
             if ($query['active'] == 0) {
                 Db::name('address')->where(['openid' => $openid, 'id' => $id])->delete();
@@ -157,6 +191,12 @@ class Address extends BaseController
         $openid = Request::post('openid');
         $id     = Request::post('id');
         try {
+            validate(Openid::class)->check([
+                'openid' => $openid
+            ]);
+            validate(Digital::class)->check([
+                'digital' => $id
+            ]);
             Db::name('address')->where('openid', $openid)->update(['active' => 1]);
             Db::name('address')->where(['openid' => $openid, 'id' => $id])->update(['active' => 0]);
             $params = array(
@@ -178,6 +218,9 @@ class Address extends BaseController
     {
         $openid = Request::post('openid');
         try {
+            validate(Openid::class)->check([
+                'openid' => $openid
+            ]);
             $result = array();
             $query = Db::table('address')->where('openid', $openid)->select();
             foreach ($query as $val) {

@@ -6,6 +6,13 @@ use think\Facade\Db;
 use think\facade\Cache;
 use think\facade\Request;
 
+use app\validate\Openid;
+use app\validate\Unique;
+use app\validate\Digital;
+use app\validate\Word;
+use app\validate\Water;
+use think\exception\ValidateException;
+
 class Order extends BaseController
 {
     public function index($method)
@@ -28,6 +35,9 @@ class Order extends BaseController
     {
         $openid = Request::post('openid');
         try {
+            validate(Openid::class)->check([
+                'openid' => $openid
+            ]);
             $query = Db::table('address')->where(['openid' => $openid, 'active' => 0])->find();
             $result = array(
                 'id'      => $query['id'],
@@ -60,6 +70,27 @@ class Order extends BaseController
         $time      = time();
 
         try {
+            validate(Openid::class)->check([
+                'openid' => $openid
+            ]);
+            validate(Digital::class)->check([
+                'digital' => $addressId
+            ]);
+            validate(Word::class)->check([
+                'Word' => $gather
+            ]);
+            validate(Digital::class)->check([
+                'digital' => $count
+            ]);
+            validate(Digital::class)->check([
+                'digital' => $goodsId
+            ]);
+            validate(Unique::class)->check([
+                'unique' => $unique
+            ]);
+            validate(Digital::class)->check([
+                'digital' => $amount
+            ]);
             $address = Db::name('address')->where(['id' => $addressId, 'openid' => $openid])->find();
             $goods   = Db::name('detail')->where(['unique' => $unique, 'id' => $goodsId])->find();
 
@@ -105,6 +136,12 @@ class Order extends BaseController
         $water = Request::post('water');
 
         try {
+            validate(Openid::class)->check([
+                'openid' => $openid
+            ]);
+            validate(Water::class)->check([
+                'water' => $water
+            ]);
             $params = array(
                 'status'  => true,
                 'message' => '查询支付流水～'
